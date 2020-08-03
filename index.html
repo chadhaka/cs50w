@@ -3,6 +3,7 @@
     <head>
         <title>Search</title>
         <link rel="stylesheet" type="text/css" href="gstyle.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     </head>
     <body>
         <div class="links">
@@ -11,12 +12,19 @@
                 <a href="https://www.google.com/advanced_search"><li>Advanced Search</li></a>
             </ul>
         </div>
-        <div class="logo">
-            <img alt="Google" id="hplogo" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png">
-        </div>
+       
         <div class="content">
+            <div class="logo">
+                <img alt="Google" id="hplogo" src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png">
+            </div>
             <form action="https://google.com/search">
-                <input type="text" name="q" class="searchbar">
+                <div class="searchbar-container">
+                    <input type="text" name="q" class="searchbar">
+                    <div class="icon-container">
+                        <i class="material-icons icon">search</i>
+                    </div>
+
+                </div>
                 <div class="bttnBlock">
                     <input type="submit" value="Google Search" class="bttn">
                     <input type="submit" name="btnI" value="I'm Feeling Lucky" class="bttn">
