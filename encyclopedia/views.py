@@ -32,7 +32,8 @@ def entry(request, entry):
            })
     else:
         return render(request, "encyclopedia/error.html", {
-            "searchform": searchform
+            "searchform": searchform,
+            "error": "Error! Page not found"
             })
 
 def search(request, query):
@@ -46,7 +47,31 @@ def search(request, query):
         "results": results,
         "searchform": searchform
     })
-    
+
+
+
+def newpage(request):
+    if request.method == "GET":
+        searchform = functions.searchForm(request)
+        pageform = functions.newPage(request)
+        return render(request, "encyclopedia/newpage.html", {
+        "searchform": searchform,
+        "pageform": pageform
+        })
+    else:
+        try:
+            return functions.newPage(request)
+        except:
+            request.method = "GET"
+            searchform = functions.searchForm(request)
+            return render(request, "encyclopedia/error.html", {
+            "searchform": searchform,
+            "error": "Error! Page Already Exists"
+            })
+
+        
+
+
 
 
 

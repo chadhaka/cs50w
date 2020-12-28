@@ -1,0 +1,1 @@
+This is the content for a new page :)
