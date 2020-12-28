@@ -1,14 +1,14 @@
 {% extends "encyclopedia/layout.html" %}
-
 {% block title %} {{title}} {% endblock %}
 
 {% block body %}
     {% if resultsFound %}
-    <ul>
-        {% for result in results %}
-        <li> <a href="{% url 'encyclopedia:entry' entry.title%}"> {{result}} </li>
-    </ul>
+        <ul>
+            {% for result in results %}
+            <li> <a href="{% url 'encyclopedia:entry' result%}"> {{result}} </li>
+            {% endfor %}
+        </ul>
     {% else %}
-    <div> No results found! </div>
-    {% end if %}
+        <div> No results found! </div>
+    {% endif %}
 {% endblock %}

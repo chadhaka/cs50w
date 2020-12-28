@@ -1,63 +1,52 @@
-from django.shortcuts import render
-
-from . import util
-from markdown2 import Markdown
 from django import forms
+from django.shortcuts import render
+from . import util, functions
+from markdown2 import Markdown
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
 
 
 def index(request):
+    if request.method == "GET":
+        searchform = functions.searchForm(request)
+    else:
+        return functions.searchForm(request)
     return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries()
+        "entries": util.list_entries(),
+        "searchform": searchform
     })
 
 def entry(request, entry):
-    entryMD = util.get_entry(entry)
-    md = Markdown()
-    if entryMD != None:
-       entryHtml = md.convert(entryMD)
-    #    print(entryHtml)
+    if request.method == "GET":
+        searchform = functions.searchForm(request)
+    else:
+        return functions.searchForm(request)
+
+    entryResult, entryHtml = functions.entryConvert(entry)
+    if entryResult:
        return render(request, "encyclopedia/entry.html", {
            "title": entry.capitalize(),
-           "bodyText": entryHtml 
+           "bodyText": entryHtml,
+           "searchform": searchform 
            })
-    return render(request, "encyclopedia/error.html")
+    else:
+        return render(request, "encyclopedia/error.html", {
+            "searchform": searchform
+            })
 
-def search(request):
-    class NewTaskForm(forms.Form):
-        searchform = forms.CharField(label="Search Encyclopedia")
-    # if request.method == "POST":
-    #     searchForm = NewTaskForm(request.POST) 
-    #     if searchForm.is_valid():
-    #         query = searchForm.cleaned_data["query"]
-    #         return render(request, "encyclopedia/test.html", {
-    #             "query": query
-    #         })
-    #         # print(query)
-    #         entryCheck = util.get_entry(query)
-    #         print(entryCheck)
-    #         if entryCheck != None:
-    #             return entry(request, query)
-    #         else:
-    #             entriesList = util.list_entries()
-    #             results = list(filter(lambda x: query in x, entriesList)) 
-    #             queryTitle = "Showing results for: " + query
-    #             return render(request, "encyclopedia/searchresults.html", {
-    #                 "title": queryTitle,
-    #                 "resultsFound": results >= 1,
-    #                 "results": results
-    #             })
-    #     else:
-    #         return render(request, "encyclopedia/index.html", {
-    #             "searchform": query
-    #         })
-
-            #return HttpResponseRedirect(reverse("encyclopedia:index"))
-    return render(request, "encyclopedia/index.html", {
-        "searchform": NewTaskForm()
+def search(request, query):
+    resultsFound, title, results = functions.searchResults(query)
+    if request.method == "GET":
+        searchform = functions.searchForm(request)
+    
+    return render(request, "encyclopedia/searchresults.html", {
+        "resultsFound": resultsFound,
+        "title": title,
+        "results": results,
+        "searchform": searchform
     })
+    
 
 
 

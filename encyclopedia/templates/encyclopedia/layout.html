@@ -13,8 +13,7 @@
             <div class="sidebar col-lg-2 col-md-3">
                 <h2>Wiki</h2>
                 <div> 
-                    {% block search %}
-                    {% endblock%}
+                {% include "encyclopedia/search.html" %}
                 </div>
                 <div>
                     <a href="{% url 'encyclopedia:index' %}"> Home </a>
