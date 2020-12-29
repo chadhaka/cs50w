@@ -20,33 +20,27 @@ def index(request):
 def entry(request, entry):
     if request.method == "GET":
         searchform = functions.searchForm(request)
+        entryResult, entryHtml = functions.entryConvert(entry)
+        if entryResult:
+            return render(request, "encyclopedia/entry.html", {
+                "title": entry.capitalize(),
+                "bodyText": entryHtml,
+                "searchform": searchform 
+                })
+        else:
+            return render(request, "encyclopedia/error.html", {
+                "searchform": searchform,
+                "error": "Error! Page not found"
+                })
     else:
+
         return functions.searchForm(request)
 
-    entryResult, entryHtml = functions.entryConvert(entry)
-    if entryResult:
-       return render(request, "encyclopedia/entry.html", {
-           "title": entry.capitalize(),
-           "bodyText": entryHtml,
-           "searchform": searchform 
-           })
-    else:
-        return render(request, "encyclopedia/error.html", {
-            "searchform": searchform,
-            "error": "Error! Page not found"
-            })
-
 def search(request, query):
-    resultsFound, title, results = functions.searchResults(query)
+    
     if request.method == "GET":
         searchform = functions.searchForm(request)
     
-    return render(request, "encyclopedia/searchresults.html", {
-        "resultsFound": resultsFound,
-        "title": title,
-        "results": results,
-        "searchform": searchform
-    })
 
 
 
@@ -69,7 +63,12 @@ def newpage(request):
             "error": "Error! Page Already Exists"
             })
 
-        
+def random(request):
+    entry = functions.randomEntry()
+    return HttpResponseRedirect(reverse("encyclopedia:entry", kwargs={
+            "entry": entry
+            }))
+
 
 
 

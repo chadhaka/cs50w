@@ -3,6 +3,7 @@ from . import util, forms
 from markdown2 import Markdown
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from random import randint
 
 def entryCheck(entry):
     entryExists = False
@@ -71,3 +72,8 @@ def newPage(request):
             return pageForm
     # Get method - search form is created
     return forms.PageForm()
+
+def randomEntry():
+    entriesList = util.list_entries()
+    return entriesList[randint(0, len(entriesList)-1)] 
+    
