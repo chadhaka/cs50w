@@ -25,7 +25,8 @@ def entry(request, entry):
             return render(request, "encyclopedia/entry.html", {
                 "title": entry.capitalize(),
                 "bodyText": entryHtml,
-                "searchform": searchform 
+                "searchform": searchform,
+                "edit": False
                 })
         else:
             return render(request, "encyclopedia/error.html", {
@@ -33,14 +34,21 @@ def entry(request, entry):
                 "error": "Error! Page not found"
                 })
     else:
-
         return functions.searchForm(request)
 
+        
+
 def search(request, query):
-    
+    resultsFound, title, results = functions.searchResults(query)
     if request.method == "GET":
         searchform = functions.searchForm(request)
     
+    return render(request, "encyclopedia/searchresults.html", {
+        "resultsFound": resultsFound,
+        "title": title,
+        "results": results,
+        "searchform": searchform
+    })
 
 
 
@@ -65,10 +73,30 @@ def newpage(request):
 
 def random(request):
     entry = functions.randomEntry()
-    return HttpResponseRedirect(reverse("encyclopedia:entry", kwargs={
+    return HttpResponseRedirect(reverse("wiki:entry", kwargs={
             "entry": entry
             }))
 
+def edit(request, entry):
+    if request.method == "GET":
+        searchform = functions.searchForm(request)
+        pageform = functions.editPage(request,entry)
+        return render(request, "encyclopedia/entry.html", {        
+            "title": entry.capitalize(),
+            "pageForm": pageform,
+            "searchform": searchform,
+            "edit": True
+            })
+    else:
+        try:
+            return functions.editPage(request,entry)
+        except:
+            request.method = "GET"
+            searchform = functions.searchForm(request)
+            return render(request, "encyclopedia/error.html", {
+            "searchform": searchform,
+            "error": "Error!"
+            })
 
 
 

@@ -16,13 +16,13 @@
                 {% include "encyclopedia/search.html" %}
                 </div>
                 <div>
-                    <a href="{% url 'encyclopedia:index' %}"> Home </a>
+                    <a href="{% url 'wiki:index' %}"> Home </a>
                 </div>
                 <div>
-                    <a href="{% url 'encyclopedia:newpage' %}">Create New Page</a>
+                    <a href="{% url 'wiki:newpage' %}">Create New Page</a>
                 </div>
                 <div>
-                    <a href="{% url 'encyclopedia:random' %}">Random Page</a>
+                    <a href="{% url 'wiki:random' %}">Random Page</a>
                 </div>
                 {% block nav %}
                 {% endblock %}

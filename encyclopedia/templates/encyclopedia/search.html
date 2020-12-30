@@ -1,6 +1,6 @@
 
 <h2> Search </h2>
-<form action="{% url 'encyclopedia:search' %}" method="POST">
+<form action="{% url 'wiki:search' %}" method="POST">
     {% csrf_token %}
     {{ searchform }}
     <input type="submit" class="search" value="Search" >

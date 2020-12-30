@@ -5,7 +5,7 @@
     {% if resultsFound %}
         <ul>
             {% for result in results %}
-            <li> <a href="{% url 'encyclopedia:entry' result%}"> {{result}} </li>
+            <li> <a href="{% url 'wiki:entry' result%}"> {{result}} </li>
             {% endfor %}
         </ul>
     {% else %}

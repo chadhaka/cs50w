@@ -3,6 +3,21 @@
     {% block title %} {{title}} {% endblock %}
 
     {% block body %}
-        <div> {{bodyText|safe}} </div>
+        {% if edit %}
+            <form action="{% url 'wiki:edit' title%}" method="POST">
+                {% csrf_token %}
+                {{ pageForm  }}
+                <input type="submit" value="Save" >
+            </form>
+        {% else %}
+            <div> {{bodyText|safe}} </div>
+            <div class = "button">
+                <button >
+                    <a href="{% url 'wiki:edit' title %}"> Edit </a>
+                </button>
+
+            </div>
+            
+        {% endif %}
     {% endblock %}
     

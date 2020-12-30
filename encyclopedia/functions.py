@@ -25,11 +25,11 @@ def searchDirect(query):
     # Returns redirected page to user based on whether entry exists or not
     
     if entryCheck(query):
-        return HttpResponseRedirect(reverse("encyclopedia:entry", kwargs={
+        return HttpResponseRedirect(reverse("wiki:entry", kwargs={
             "entry": query
             }))
     else:
-        return HttpResponseRedirect(reverse("encyclopedia:search", kwargs={
+        return HttpResponseRedirect(reverse("wiki:search", kwargs={
             "query": query
             }))
 
@@ -62,7 +62,7 @@ def newPage(request):
             if not entryCheck(title):
                 content = pageForm.cleaned_data["content"]
                 util.save_entry(title,content)
-                return HttpResponseRedirect(reverse("encyclopedia:entry", kwargs={
+                return HttpResponseRedirect(reverse("wiki:entry", kwargs={
                     "entry": title
                     }))
             else:
@@ -72,6 +72,24 @@ def newPage(request):
             return pageForm
     # Get method - search form is created
     return forms.PageForm()
+
+def editPage(request, entry):
+    if request.method == "POST":
+        pageForm = forms.PageForm(request.POST)
+        if pageForm.is_valid():
+            title = pageForm.cleaned_data["title"]
+            content = pageForm.cleaned_data["content"]
+            util.save_entry(title,content)
+            return HttpResponseRedirect(reverse("wiki:entry", kwargs={
+                "entry": title
+                }))
+        else:
+            raise Exception("Error Updating") 
+    else:            
+        title = entry
+        content = util.get_entry(entry)
+        return forms.PageForm(initial={"title": title, "content": content}) 
+
 
 def randomEntry():
     entriesList = util.list_entries()

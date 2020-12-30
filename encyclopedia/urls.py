@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-app_name = "encyclopedia"
+app_name = "wiki"
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -9,5 +9,7 @@ urlpatterns = [
     path("random", views.random, name="random"),
     path("<str:entry>", views.entry, name="entry"),
     path("search/<str:query>", views.search, name="search"),
-    path("search", views.search, name="search")
+    path("search", views.search, name="search"),
+    path("edit/<str:entry>", views.edit, name="edit")
+    
 ]
